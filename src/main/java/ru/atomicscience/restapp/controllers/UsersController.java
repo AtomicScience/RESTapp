@@ -14,10 +14,10 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequestMapping("/")
-public class PaymentController {
+public class UsersController {
     private UsersCrudRepository repository;
 
-    public PaymentController(UsersCrudRepository repository) {
+    public UsersController(UsersCrudRepository repository) {
         this.repository = repository;
     }
 
@@ -29,6 +29,12 @@ public class PaymentController {
         repository.save(user);
 
         return ResponseEntity.created(new URI("/users/" + user.getLogin())).build();
+    }
+
+    // TODO: Pagination
+    @GetMapping("/users")
+    public ResponseEntity<Iterable<User>> getAllUser() {
+        return ResponseEntity.ok(repository.findAll());
     }
 
     @GetMapping("/users/{login}")
