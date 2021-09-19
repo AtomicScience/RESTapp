@@ -13,6 +13,7 @@ import ru.atomicscience.restapp.security.UserRole;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/debug")
@@ -43,14 +44,14 @@ public class DebugController {
 
     @PostMapping("/promoteToAdmin")
     public ResponseEntity<Void> promoteToAdmin(@RequestParam String login) {
-        if(!repository.existsById(login))
+        Optional<User> possibleUser = repository.findById(login);
+
+        if(possibleUser.isEmpty())
             return ResponseEntity.notFound().build();
 
-        @SuppressWarnings("OptionalGetWithoutIsPresent")
-        User user = repository.findById(login).get();
+        User user = possibleUser.get();
 
         user.setRole(UserRole.ADMIN);
-
         repository.save(user);
 
         return ResponseEntity.ok().build();
