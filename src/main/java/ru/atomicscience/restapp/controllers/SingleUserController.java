@@ -1,0 +1,78 @@
+package ru.atomicscience.restapp.controllers;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import ru.atomicscience.restapp.dao.UsersCrudRepository;
+import ru.atomicscience.restapp.models.User;
+import ru.atomicscience.restapp.util.ObjectUtilities;
+
+import java.util.Optional;
+import java.util.UUID;
+
+@RestController
+@RequestMapping("/users/{id}")
+public class SingleUserController {
+    private final UsersCrudRepository repository;
+    private final PasswordEncoder encoder;
+
+    public SingleUserController(UsersCrudRepository repository, PasswordEncoder encoder) {
+        this.repository = repository;
+        this.encoder = encoder;
+    }
+
+    @GetMapping
+    public ResponseEntity<Optional<User>> getSingleUser(@PathVariable("id") UUID id) {
+        if(repository.existsById(id))
+            return ResponseEntity.ok(repository.findById(id));
+
+        return ResponseEntity.notFound().build();
+    }
+
+    @PatchMapping
+    public ResponseEntity<Object> changeUser(@PathVariable("id") UUID id, @RequestBody User newUser) {
+        Optional<User> possibleUserToChange = repository.findById(id);
+
+        if(possibleUserToChange.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        if(repository.existsByLogin(newUser.getLogin()))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User with specified login already exists"));
+
+        if(newUser.getId() != null) {
+            return ResponseEntity.badRequest().body(Optional.of("Cannot change the ID of the user"));
+        }
+
+        if(newUser.getRole() != null) {
+            return ResponseEntity.badRequest().body(Optional.of("Cannot change the Role of the user"));
+        }
+
+        User userToChange = possibleUserToChange.get();
+
+        if(newUser.getPassword() != null) {
+            String hashedPassword = encoder.encode(newUser.getPassword());
+            newUser.setPassword(hashedPassword);
+        }
+
+        ObjectUtilities.copyNonNullProperties(newUser, userToChange);
+
+        repository.save(userToChange);
+
+        return ResponseEntity.ok(Optional.of(userToChange));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") UUID id) {
+        Optional<User> possibleUserToDelete = repository.findById(id);
+
+        if(possibleUserToDelete.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        User userToDelete = possibleUserToDelete.get();
+
+        repository.delete(userToDelete);
+
+        return ResponseEntity.ok().build();
+    }
+}
