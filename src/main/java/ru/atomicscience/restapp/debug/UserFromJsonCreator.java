@@ -36,7 +36,7 @@ public class UserFromJsonCreator {
 
     public User constructSingleUserFromJson(JsonNode jsonNode) {
         User user = new User();
-
+        
         user.setLogin(jsonNode.get("login").asText());
         user.setFirstName(jsonNode.get("firstName").asText());
         user.setLastName(jsonNode.get("lastName").asText());

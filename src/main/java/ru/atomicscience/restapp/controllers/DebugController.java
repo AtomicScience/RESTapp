@@ -14,6 +14,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/debug")
@@ -43,8 +44,8 @@ public class DebugController {
     }
 
     @PostMapping("/promoteToAdmin")
-    public ResponseEntity<Void> promoteToAdmin(@RequestParam String login) {
-        Optional<User> possibleUser = repository.findById(login);
+    public ResponseEntity<Void> promoteToAdmin(@RequestParam UUID id) {
+        Optional<User> possibleUser = repository.findById(id);
 
         if(possibleUser.isEmpty())
             return ResponseEntity.notFound().build();

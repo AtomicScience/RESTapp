@@ -1,6 +1,7 @@
 create table if not exists users
 (
-    login         varchar(64)   primary key,
+    id            uuid          primary key,
+    login         varchar(64)   not null,
 
     first_name    varchar(64)   not null,
     last_name     varchar(64)   not null,

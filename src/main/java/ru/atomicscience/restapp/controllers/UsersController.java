@@ -21,26 +21,21 @@ public class UsersController {
 
     @PostMapping
     public ResponseEntity<Optional<String>> addUser(@RequestBody User user) throws URISyntaxException {
-        if(repository.existsById(user.getLogin()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User already exists"));
+        if(!user.isFull())
+            return ResponseEntity.badRequest().body(Optional.of("The user is missing required fields"));
+
+        if(repository.existsByLogin(user.getLogin()))
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User with specified login already exists"));
 
         repository.save(user);
 
-        return ResponseEntity.created(new URI("/users/" + user.getLogin())).build();
+        return ResponseEntity.created(new URI("/users/" + user.getId())).build();
     }
 
     // TODO: Pagination
     @GetMapping
     public ResponseEntity<Iterable<User>> getAllUser() {
         return ResponseEntity.ok(repository.findAll());
-    }
-
-    @GetMapping("/{login}")
-    public ResponseEntity<Optional<User>> getSingleUser(@PathVariable("login") String login) {
-        if(repository.existsById(login))
-            return ResponseEntity.ok(repository.findById(login));
-
-        return ResponseEntity.notFound().build();
     }
 }
 
