@@ -24,9 +24,12 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
+                    .antMatchers("/**")
+                        .permitAll()
                     .antMatchers("/auth/*")
                         .permitAll()
-                    .antMatchers("/**")
-                        .hasAnyRole();
+                    .antMatchers("/debug/**")
+                        .permitAll();
+        httpSecurity.csrf().disable();
     }
 }
