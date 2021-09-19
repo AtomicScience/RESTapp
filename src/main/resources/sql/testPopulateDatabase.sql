@@ -9,7 +9,7 @@ insert into users values
 -- Admin Adminovich, administrator, with as many fields set to NULL as possible
 ('admin',
     'Admin', 'Adminovich',
-    null,
+    current_date,
     '$2b$04$yatmX3wqU77uPwkwTbE9T.pPa.vMR5cGMrzi4oqSiRRtWtXD4cVFi', -- Password: 'admin'
-    null, null,
+    '', '',
     'ADMIN')
