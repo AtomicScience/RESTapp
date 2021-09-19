@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/users/{id}")
+@RequestMapping("/users/user/{id}")
 public class SingleUserController {
     private final UsersCrudRepository repository;
     private final PasswordEncoder encoder;
