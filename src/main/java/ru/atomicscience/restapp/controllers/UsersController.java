@@ -1,6 +1,5 @@
 package ru.atomicscience.restapp.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,17 +10,16 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Optional;
 
-@Slf4j
 @RestController
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UsersController {
-    private UsersCrudRepository repository;
+    private final UsersCrudRepository repository;
 
     public UsersController(UsersCrudRepository repository) {
         this.repository = repository;
     }
 
-    @PostMapping("/users")
+    @PostMapping
     public ResponseEntity<Optional<String>> addUser(@RequestBody User user) throws URISyntaxException {
         if(repository.existsById(user.getLogin()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User already exists"));
@@ -32,12 +30,12 @@ public class UsersController {
     }
 
     // TODO: Pagination
-    @GetMapping("/users")
+    @GetMapping
     public ResponseEntity<Iterable<User>> getAllUser() {
         return ResponseEntity.ok(repository.findAll());
     }
 
-    @GetMapping("/users/{login}")
+    @GetMapping("/{login}")
     public ResponseEntity<Optional<User>> getSingleUser(@PathVariable("login") String login) {
         if(repository.existsById(login))
             return ResponseEntity.ok(repository.findById(login));
