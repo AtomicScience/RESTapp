@@ -5,7 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import ru.atomicscience.restapp.models.User;
-import ru.atomicscience.restapp.security.UserRole;
+import ru.atomicscience.restapp.models.UserRole;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

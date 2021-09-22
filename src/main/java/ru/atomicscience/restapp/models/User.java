@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
-import ru.atomicscience.restapp.security.UserRole;
 
 import javax.persistence.*;
 import java.util.Collection;

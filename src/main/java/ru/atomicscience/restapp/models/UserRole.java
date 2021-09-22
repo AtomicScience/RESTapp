@@ -1,4 +1,4 @@
-package ru.atomicscience.restapp.security;
+package ru.atomicscience.restapp.models;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

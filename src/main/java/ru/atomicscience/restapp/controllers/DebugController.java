@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.atomicscience.restapp.dao.UsersCrudRepository;
 import ru.atomicscience.restapp.debug.RandomUserGenerator;
 import ru.atomicscience.restapp.models.User;
-import ru.atomicscience.restapp.security.UserRole;
+import ru.atomicscience.restapp.models.UserRole;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

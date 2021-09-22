@@ -41,11 +41,14 @@ public class SingleUserController {
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User with specified login already exists"));
 
         if(newUser.getId() != null) {
-            return ResponseEntity.badRequest().body(Optional.of("Cannot change the ID of the user"));
+            return ResponseEntity.badRequest()
+                    .body(Optional.of("Cannot change the ID of the user"));
         }
 
+        // TODO: Add promote function
         if(newUser.getRole() != null) {
-            return ResponseEntity.badRequest().body(Optional.of("Cannot change the Role of the user"));
+            return ResponseEntity.badRequest()
+                    .body(Optional.of("Cannot change the Role of the user. Use /users/promote instead"));
         }
 
         User userToChange = possibleUserToChange.get();
