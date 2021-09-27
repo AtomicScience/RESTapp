@@ -10,8 +10,6 @@ import ru.atomicscience.restapp.debug.RandomUserGenerator;
 import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.models.UserRole;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -34,13 +32,15 @@ public class DebugController {
     }
 
     @PostMapping("/populateDatabase")
-    public ResponseEntity<Void> populateDatabase(@RequestParam @Min(0) @Max(1000) int count) {
+    public ResponseEntity<Object> populateDatabase(@RequestParam int count) {
+        if(count < 0 || count > 100) return ResponseEntity.badRequest().body("Count can be between 0 and 100");
+
         List<User> usersToAdd = userGenerator.generateTestUsers(count);
 
         repository.deleteAll();
         repository.saveAll(usersToAdd);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(usersToAdd);
     }
 
     @PostMapping("/promoteToAdmin")

@@ -13,6 +13,7 @@ public class ProtectedUrlsBean {
     public RequestMatcher getProtectedUrls() {
         return new AndRequestMatcher(
                 new NegatedRequestMatcher(new AntPathRequestMatcher("/auth")),
+                new NegatedRequestMatcher(new AntPathRequestMatcher("/debug/**")),
                 new NegatedRequestMatcher(new AntPathRequestMatcher("/error"))
         );
     }
