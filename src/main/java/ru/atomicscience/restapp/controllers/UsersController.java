@@ -51,7 +51,6 @@ public class UsersController {
         return ResponseEntity.ok().build();
     }
 
-    // TODO: Pagination
     @GetMapping
     public ResponseEntity<Iterable<User>> getAllUser() {
         return ResponseEntity.ok(repository.findAll());

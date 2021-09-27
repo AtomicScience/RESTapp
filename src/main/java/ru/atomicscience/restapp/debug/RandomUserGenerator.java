@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
  * Is used for debug/test purposes only, thus assumes that all the passed
  * data is valid
  */
-// TODO: Refactor using the object-mapping facilities of the Jackson
 @Component
 public class RandomUserGenerator {
     private final UserFromJsonCreator userFromJsonCreator;
