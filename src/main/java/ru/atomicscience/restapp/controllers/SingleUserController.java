@@ -45,7 +45,6 @@ public class SingleUserController {
                     .body(Optional.of("Cannot change the ID of the user"));
         }
 
-        // TODO: Add promote function
         if(newUser.getRole() != null) {
             return ResponseEntity.badRequest()
                     .body(Optional.of("Cannot change the Role of the user. Use /users/promote instead"));

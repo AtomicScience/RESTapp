@@ -13,15 +13,18 @@ public class DecisionManagerProvider {
     private final AllowForUsersDecisionVoter allowForUsers;
     private final SingleUserDecisionVoter    singleUser;
     private final UsersDecisionVoter         users;
+    private final PromoteDecisionVoter       promote;
 
     public DecisionManagerProvider(AllowForAllDecisionVoter allowForAll,
                                    AllowForUsersDecisionVoter allowForUsers,
                                    SingleUserDecisionVoter singleUser,
-                                   UsersDecisionVoter users) {
+                                   UsersDecisionVoter users,
+                                   PromoteDecisionVoter promote) {
         this.allowForAll = allowForAll;
         this.allowForUsers = allowForUsers;
         this.singleUser = singleUser;
         this.users = users;
+        this.promote = promote;
     }
 
     @Bean
@@ -30,7 +33,8 @@ public class DecisionManagerProvider {
                 allowForAll,
                 allowForUsers,
                 singleUser,
-                users
+                users,
+                promote
         ));
     }
 }
