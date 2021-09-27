@@ -1,6 +1,7 @@
 package ru.atomicscience.restapp.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
@@ -33,7 +34,9 @@ public class User {
     @Temporal(TemporalType.DATE)
     private Date   birthday;
 
-    @JsonIgnore
+    // This annotation will disable password field from being included in serialization,
+    // but will not stop it from being included in deserialized objects
+    @JsonProperty(value = "password", access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     private String aboutMe;
@@ -41,6 +44,11 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+    @JsonIgnore
+    // Field stores the last token user has authenticated with and is nullified when
+    // the token is invalidated, disabling authentication with said token.
+    // Token is hashed with the same algorithm as the password
+    private String lastValidToken;
 
     @Transient
     @JsonIgnore

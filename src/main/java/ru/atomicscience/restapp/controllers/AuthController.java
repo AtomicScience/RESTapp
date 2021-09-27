@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.atomicscience.restapp.dao.UsersRepositorySearcher;
 import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.security.jwt.JwtProvider;
+import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
 import java.util.Optional;
 
@@ -17,10 +18,14 @@ import java.util.Optional;
 public class AuthController {
     private final UsersRepositorySearcher searcher;
     private final JwtProvider jwtProvider;
+    private final TokenInvalidationService invalidationService;
 
-    public AuthController(UsersRepositorySearcher searcher, JwtProvider jwtProvider) {
+    public AuthController(UsersRepositorySearcher searcher,
+                          JwtProvider jwtProvider,
+                          TokenInvalidationService invalidationService) {
         this.searcher = searcher;
         this.jwtProvider = jwtProvider;
+        this.invalidationService = invalidationService;
     }
 
     @PostMapping
@@ -32,6 +37,8 @@ public class AuthController {
 
         User user = optionalUser.get();
         String token = jwtProvider.generateToken(user.getLogin());
+
+        invalidationService.assignValidTokenForUser(user, token);
 
         return ResponseEntity.ok(token);
     }

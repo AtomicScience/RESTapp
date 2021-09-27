@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.atomicscience.restapp.dao.UsersCrudRepository;
 import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.models.UserRole;
+import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -16,9 +17,12 @@ import java.util.UUID;
 @RequestMapping("/users")
 public class UsersController {
     private final UsersCrudRepository repository;
+    private final TokenInvalidationService invalidationService;
 
-    public UsersController(UsersCrudRepository repository) {
+    public UsersController(UsersCrudRepository repository,
+                           TokenInvalidationService invalidationService) {
         this.repository = repository;
+        this.invalidationService = invalidationService;
     }
 
     @PostMapping
@@ -47,6 +51,8 @@ public class UsersController {
         user.setRole(role);
 
         repository.save(user);
+
+        invalidationService.invalidateTokenForUser(user);
 
         return ResponseEntity.ok().build();
     }

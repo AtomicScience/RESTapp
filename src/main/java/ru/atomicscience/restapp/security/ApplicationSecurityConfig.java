@@ -14,9 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter;
 import org.springframework.security.web.util.matcher.RequestMatcher;
-import ru.atomicscience.restapp.security.accessDecision.SingleUserDecisionVoter;
 import ru.atomicscience.restapp.security.jwt.JwtAuthenticationFilter;
 import ru.atomicscience.restapp.security.jwt.JwtProvider;
+import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
 @Configuration
 @EnableWebSecurity
@@ -27,18 +27,20 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final RequestMatcher urlsToProtect;
     private final JwtProvider jwtProvider;
     private final AccessDecisionManager accessDecisionManager;
+    private final TokenInvalidationService invalidationService;
 
     public ApplicationSecurityConfig(UserDetailsService detailsService,
                                      AuthenticationProvider authenticationProvider,
                                      RequestMatcher urlsToProtect,
                                      JwtProvider jwtProvider,
-                                     SingleUserDecisionVoter sameUserAccessVoter,
-                                     AccessDecisionManager accessDecisionManager) {
+                                     AccessDecisionManager accessDecisionManager,
+                                     TokenInvalidationService invalidationService) {
         this.detailsService = detailsService;
         this.authenticationProvider = authenticationProvider;
         this.urlsToProtect = urlsToProtect;
         this.jwtProvider = jwtProvider;
         this.accessDecisionManager = accessDecisionManager;
+        this.invalidationService = invalidationService;
     }
 
     @Autowired
@@ -55,7 +57,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                         .accessDecisionManager(accessDecisionManager)
                         .anyRequest().permitAll() // Line affects nothing, since custom manager is used
                 .and()
-                    .addFilterBefore(authFilter(urlsToProtect, jwtProvider), AnonymousAuthenticationFilter.class);
+                    .addFilterBefore(authFilter(), AnonymousAuthenticationFilter.class);
     }
 
     @Override
@@ -67,8 +69,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     // TODO: Token invalidation
-    public JwtAuthenticationFilter authFilter(RequestMatcher urlsToProtect, JwtProvider jwtProvider) throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(urlsToProtect, jwtProvider);
+    public JwtAuthenticationFilter authFilter() throws Exception {
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(urlsToProtect, jwtProvider, invalidationService);
         filter.setAuthenticationManager(authenticationManager());
         return filter;
     }

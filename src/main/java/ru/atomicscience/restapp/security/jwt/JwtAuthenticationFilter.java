@@ -15,16 +15,24 @@ import java.io.IOException;
 
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
     private final JwtProvider jwtProvider;
+    private final TokenInvalidationService invalidationService;
 
-    public JwtAuthenticationFilter(RequestMatcher urlsToProtect, JwtProvider jwtProvider) {
+    public JwtAuthenticationFilter(RequestMatcher urlsToProtect,
+                                   JwtProvider jwtProvider,
+                                   TokenInvalidationService invalidationService) {
         super(urlsToProtect);
         this.jwtProvider = jwtProvider;
+        this.invalidationService = invalidationService;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         String authHeader = request.getHeader("Authorization");
         JwtAuthenticationToken token = new JwtAuthenticationToken(authHeader, jwtProvider);
+
+        if(invalidationService.checkIfTokenWasInvalidated(token)) {
+            throw new TokenInvalidatedException();
+        }
 
         return getAuthenticationManager().authenticate(token);
     }
@@ -51,7 +59,11 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
         } else if(failed instanceof UsernameNotFoundException) {
             response
                     .getWriter()
-                    .write("Failed to authorize user: username in the token was not found. Try to relogin");
+                    .write("Failed to authenticate user: username in the token was not found. Try to relogin");
+        } else if(failed instanceof TokenInvalidatedException) {
+            response
+                    .getWriter()
+                    .write("Token invalidated: reauthenticate");
         } else {
             response
                     .getWriter()

@@ -6,6 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import ru.atomicscience.restapp.dao.UsersCrudRepository;
 import ru.atomicscience.restapp.models.User;
+import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 import ru.atomicscience.restapp.util.ObjectUtilities;
 
 import java.util.Optional;
@@ -16,10 +17,14 @@ import java.util.UUID;
 public class SingleUserController {
     private final UsersCrudRepository repository;
     private final PasswordEncoder encoder;
+    private final TokenInvalidationService invalidationService;
 
-    public SingleUserController(UsersCrudRepository repository, PasswordEncoder encoder) {
+    public SingleUserController(UsersCrudRepository repository,
+                                PasswordEncoder encoder,
+                                TokenInvalidationService invalidationService) {
         this.repository = repository;
         this.encoder = encoder;
+        this.invalidationService = invalidationService;
     }
 
     @GetMapping
@@ -52,12 +57,13 @@ public class SingleUserController {
 
         User userToChange = possibleUserToChange.get();
 
+        ObjectUtilities.copyNonNullProperties(newUser, userToChange);
+
         if(newUser.getPassword() != null) {
             String hashedPassword = encoder.encode(newUser.getPassword());
-            newUser.setPassword(hashedPassword);
+            invalidationService.invalidateTokenForUser(userToChange);
+            userToChange.setPassword(hashedPassword);
         }
-
-        ObjectUtilities.copyNonNullProperties(newUser, userToChange);
 
         repository.save(userToChange);
 
