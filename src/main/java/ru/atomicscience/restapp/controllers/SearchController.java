@@ -5,18 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import ru.atomicscience.restapp.dao.UsersCrudRepository;
 import ru.atomicscience.restapp.dao.UsersRepositorySearcher;
 import ru.atomicscience.restapp.models.User;
 
 @RestController
 @RequestMapping("/users/search")
 public class SearchController {
-    private final UsersCrudRepository repository;
     private final UsersRepositorySearcher searcher;
 
-    public SearchController(UsersCrudRepository repository, UsersRepositorySearcher searcher) {
-        this.repository = repository;
+    public SearchController(UsersRepositorySearcher searcher) {
         this.searcher = searcher;
     }
 
@@ -24,7 +21,6 @@ public class SearchController {
     public ResponseEntity<Object> search(
             @RequestParam(required = false) String firstName,
             @RequestParam(required = false) String lastName) {
-
         Iterable<User> searchResult;
         if(firstName != null)
             if(lastName != null)

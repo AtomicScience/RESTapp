@@ -27,7 +27,6 @@ public class JwtProvider {
     public JwtValidationResult validateToken(String token) {
         if(Objects.isNull(token))
             return JwtValidationResult.NO_TOKEN_FOUND;
-
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
             return JwtValidationResult.SUCCESS;
