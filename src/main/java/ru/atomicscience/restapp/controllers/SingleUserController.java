@@ -81,6 +81,6 @@ public class SingleUserController {
 
         repository.delete(userToDelete);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }

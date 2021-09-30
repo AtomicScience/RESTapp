@@ -35,6 +35,9 @@ public class SearchController {
                         .badRequest()
                         .body("To conduct a search, specify the firstName or/and lastName parameters");
 
+        if(!searchResult.iterator().hasNext())
+            return ResponseEntity.notFound().build();
+
         return ResponseEntity.ok(searchResult);
     }
 }

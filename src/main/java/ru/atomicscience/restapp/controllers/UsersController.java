@@ -8,8 +8,6 @@ import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.models.UserRole;
 import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -26,7 +24,7 @@ public class UsersController {
     }
 
     @PostMapping
-    public ResponseEntity<Optional<String>> addUser(@RequestBody User user) throws URISyntaxException {
+    public ResponseEntity<Optional<String>> addUser(@RequestBody User user) {
         if(!user.isFull())
             return ResponseEntity.badRequest().body(Optional.of("The user is missing required fields"));
 
@@ -35,7 +33,7 @@ public class UsersController {
 
         repository.save(user);
 
-        return ResponseEntity.created(new URI("/users/" + user.getId())).build();
+        return ResponseEntity.status(HttpStatus.CREATED).body(Optional.of(user.getId().toString()));
     }
 
     @PutMapping("/promote")
