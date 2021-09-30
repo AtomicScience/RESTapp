@@ -12,6 +12,7 @@ import ru.atomicscience.restapp.util.ObjectUtilities;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
 @RestController
 @RequestMapping("/users/user/{id}")
 public class SingleUserController {

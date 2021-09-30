@@ -1,10 +1,7 @@
 package ru.atomicscience.restapp.controllers;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.atomicscience.restapp.dao.UsersCrudRepository;
 import ru.atomicscience.restapp.debug.RandomUserGenerator;
 import ru.atomicscience.restapp.models.User;
@@ -14,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
 @RestController
 @RequestMapping("/debug")
 public class DebugController {

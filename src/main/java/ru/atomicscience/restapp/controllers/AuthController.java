@@ -2,10 +2,7 @@ package ru.atomicscience.restapp.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.atomicscience.restapp.dao.UsersRepositorySearcher;
 import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.security.jwt.JwtProvider;
@@ -13,6 +10,7 @@ import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
 import java.util.Optional;
 
+@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
