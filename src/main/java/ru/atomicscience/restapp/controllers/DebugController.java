@@ -26,7 +26,7 @@ public class DebugController {
     @PostMapping("/resetStorage")
     public ResponseEntity<Void> resetStorage() {
         repository.deleteAll();
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/populateDatabase")
