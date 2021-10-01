@@ -47,6 +47,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
+                .cors().and()
                 .csrf().disable()      // We don't need to take any anti-CSRF actions since there are no sessions
                 .formLogin().disable() // To login, users must generate JWT tokens at /auth
                 .httpBasic().disable() // We use JWT tokens for authentication

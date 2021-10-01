@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.atomicscience.restapp.dao.UsersRepositorySearcher;
 import ru.atomicscience.restapp.models.User;
 
-@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
+@CrossOrigin(origins = "https://app.swaggerhub.com")
 @RestController
 @RequestMapping("/users/search")
 public class SearchController {

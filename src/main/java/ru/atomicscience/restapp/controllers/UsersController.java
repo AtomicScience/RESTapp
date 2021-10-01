@@ -11,7 +11,7 @@ import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 import java.util.Optional;
 import java.util.UUID;
 
-@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
+@CrossOrigin(origins = "https://app.swaggerhub.com")
 @RestController
 @RequestMapping("/users")
 public class UsersController {

@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@CrossOrigin(origins = "https://app.swaggerhub.com", allowCredentials = "true")
+@CrossOrigin(origins = "https://app.swaggerhub.com")
 @RestController
 @RequestMapping("/debug")
 public class DebugController {
