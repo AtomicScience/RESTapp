@@ -29,11 +29,7 @@ public class SingleUserDecisionVoter extends ServletRequestAccessDecisionVoter {
                                 HttpServletResponse response) {
         AuthenticationWrapper wrapper = new AuthenticationWrapper(authentication);
 
-        if(request.getMethod().equals("GET"))
-            return wrapper.grantedIfHasRole("USER");
-
-        if(request.getMethod().equals("DELETE"))
-            return wrapper.grantedIfHasRole("ADMIN");
+        if(wrapper.hasRole("ADMIN")) return ACCESS_GRANTED;
 
         if(request.getMethod().equals("PATCH")) {
             String uuidAsString         = getLastSegmentOfPath(request.getServletPath());
