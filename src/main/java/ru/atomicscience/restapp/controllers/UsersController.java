@@ -11,7 +11,7 @@ import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 import java.util.Optional;
 import java.util.UUID;
 
-@CrossOrigin(origins = "https://app.swaggerhub.com")
+@CrossOrigin
 @RestController
 @RequestMapping("/users")
 public class UsersController {
@@ -24,7 +24,7 @@ public class UsersController {
         this.invalidationService = invalidationService;
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json")
     public ResponseEntity<Optional<String>> addUser(@RequestBody User user) {
         if(!user.isFull())
             return ResponseEntity.badRequest().body(Optional.of("The user is missing required fields"));

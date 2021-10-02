@@ -43,7 +43,7 @@ public class User {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role;
+    private UserRole role = UserRole.USER; // A default value for all created users
     @JsonIgnore
     // Field stores the last token user has authenticated with and is nullified when
     // the token is invalidated, disabling authentication with said token.
