@@ -28,9 +28,7 @@ public class AuthenticationWrapper {
      * @return ACCESS_GRANTED if user has the rule, and ACCESS_DENIED otherwise
      */
     public int grantedIfHasRole(String role) {
-        return grantedIfConditionIsTrue(
-                authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + role))
-        );
+        return grantedIfConditionIsTrue(hasRole(role));
     }
 
     /**
@@ -40,5 +38,14 @@ public class AuthenticationWrapper {
      */
     public int grantedIfConditionIsTrue(boolean condition) {
         return condition ? AccessDecisionVoter.ACCESS_GRANTED : AccessDecisionVoter.ACCESS_DENIED;
+    }
+
+    /**
+     * Checks if authentication has the provided role
+     * @param role a role, without the "ROLE_" prefix
+     * @return true if authentication has the role
+     */
+    public boolean hasRole(String role) {
+        return authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_" + role));
     }
 }
