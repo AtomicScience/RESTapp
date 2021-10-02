@@ -36,6 +36,7 @@ public class UsersController {
         if(Objects.nonNull(user.getId()))
             return ResponseEntity.badRequest().body("Creation of users with specific IDs is forbidden");
 
+        user.setRole(UserRole.USER); // For security reasons, users cannot be created as Administrators
         repository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(user.getId().toString());
@@ -46,7 +47,7 @@ public class UsersController {
         Optional<User> possibleUser = repository.findById(id);
 
         if(possibleUser.isEmpty()) return ResponseEntity.notFound().build();
-        if(role == null) return ResponseEntity.badRequest().body("Invalid role provide");
+        if(role == null) return ResponseEntity.badRequest().body("Invalid role provided");
 
         User user = possibleUser.get();
 

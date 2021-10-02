@@ -46,16 +46,6 @@ public class SingleUserController {
         if(repository.existsByLogin(newUser.getLogin()))
             return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User with specified login already exists"));
 
-        if(newUser.getId() != null) {
-            return ResponseEntity.badRequest()
-                    .body(Optional.of("Cannot change the ID of the user"));
-        }
-
-        if(newUser.getRole() != null) {
-            return ResponseEntity.badRequest()
-                    .body(Optional.of("Cannot change the Role of the user. Use /users/promote instead"));
-        }
-
         User userToChange = possibleUserToChange.get();
 
         ObjectUtilities.copyNonNullProperties(newUser, userToChange);

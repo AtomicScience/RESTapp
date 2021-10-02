@@ -45,7 +45,8 @@ public class User {
     private String address;
 
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER; // A default value for all created users
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private UserRole role; // A default value for all created users
     @JsonIgnore
     // Field stores the last token user has authenticated with and is nullified when
     // the token is invalidated, disabling authentication with said token.
