@@ -33,7 +33,7 @@ public class User {
     private String lastName;
 
     @Temporal(TemporalType.DATE)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private Date   birthday;
 
     // This annotation will disable password field from being included in serialization,
