@@ -8,6 +8,7 @@ import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.models.UserRole;
 import ru.atomicscience.restapp.security.jwt.TokenInvalidationService;
 
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -25,16 +26,19 @@ public class UsersController {
     }
 
     @PostMapping(produces = "application/json")
-    public ResponseEntity<Optional<String>> addUser(@RequestBody User user) {
+    public ResponseEntity<String> addUser(@RequestBody User user) {
         if(!user.isFull())
-            return ResponseEntity.badRequest().body(Optional.of("The user is missing required fields"));
+            return ResponseEntity.badRequest().body("The user is missing required fields");
 
         if(repository.existsByLogin(user.getLogin()))
-            return ResponseEntity.status(HttpStatus.CONFLICT).body(Optional.of("User with specified login already exists"));
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("User with specified login already exists");
+
+        if(Objects.nonNull(user.getId()))
+            return ResponseEntity.badRequest().body("Creation of users with specific IDs is forbidden");
 
         repository.save(user);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(Optional.of(user.getId().toString()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(user.getId().toString());
     }
 
     @PutMapping("/promote")
