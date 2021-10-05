@@ -3,11 +3,11 @@ package ru.atomicscience.restapp.debug;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Component;
 import ru.atomicscience.restapp.models.User;
 import ru.atomicscience.restapp.util.RandomSequenceGenerator;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,17 +20,19 @@ import java.util.stream.Collectors;
  */
 @Component
 public class RandomUserGenerator {
+    private final ResourceLoader resourceLoader;
     private final UserFromJsonCreator userFromJsonCreator;
     private final RandomSequenceGenerator sequenceGenerator;
     private final JsonNode supernode;
     private final int maxAmountOfRandomUsers;
 
     @SneakyThrows // We can safely assume that all the data is valid
-    public RandomUserGenerator(UserFromJsonCreator userFromJsonCreator) {
+    public RandomUserGenerator(UserFromJsonCreator userFromJsonCreator, ResourceLoader resourceLoader) {
         this.userFromJsonCreator = userFromJsonCreator;
+        this.resourceLoader      = resourceLoader;
 
         ObjectMapper mapper = new ObjectMapper();
-        this.supernode = mapper.readTree(new File("src/main/resources/exampleUsers.json"));
+        this.supernode = mapper.readTree(resourceLoader.getResource("classpath:exampleUsers.json").getInputStream());
 
         this.maxAmountOfRandomUsers = this.supernode.size();
         this.sequenceGenerator = new RandomSequenceGenerator(maxAmountOfRandomUsers);

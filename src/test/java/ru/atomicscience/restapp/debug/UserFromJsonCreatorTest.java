@@ -6,10 +6,10 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import ru.atomicscience.restapp.models.User;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,6 +19,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class UserFromJsonCreatorTest {
+    @Autowired
+    private ResourceLoader resourceLoader;
     @Autowired
     private UserFromJsonCreator creator;
     @Autowired
@@ -84,6 +86,6 @@ class UserFromJsonCreatorTest {
         ObjectMapper mapper = new ObjectMapper();
 
         // Let's run our tests on the first user in the users list
-        return mapper.readTree(new File("src/main/resources/exampleUsers.json")).get(0);
+        return mapper.readTree(resourceLoader.getResource("classpath:exampleUsers.json").getInputStream()).get(0);
     }
 }
