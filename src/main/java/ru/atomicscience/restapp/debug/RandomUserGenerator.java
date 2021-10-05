@@ -30,7 +30,7 @@ public class RandomUserGenerator {
         this.userFromJsonCreator = userFromJsonCreator;
 
         ObjectMapper mapper = new ObjectMapper();
-        this.supernode = mapper.readTree(new File("src/main/resources/debug/exampleUsers.json"));
+        this.supernode = mapper.readTree(new File("src/main/resources/exampleUsers.json"));
 
         this.maxAmountOfRandomUsers = this.supernode.size();
         this.sequenceGenerator = new RandomSequenceGenerator(maxAmountOfRandomUsers);

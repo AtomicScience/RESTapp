@@ -84,6 +84,6 @@ class UserFromJsonCreatorTest {
         ObjectMapper mapper = new ObjectMapper();
 
         // Let's run our tests on the first user in the users list
-        return mapper.readTree(new File("src/main/resources/debug/exampleUsers.json")).get(0);
+        return mapper.readTree(new File("src/main/resources/exampleUsers.json")).get(0);
     }
 }
