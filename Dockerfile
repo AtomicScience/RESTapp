@@ -18,4 +18,4 @@ WORKDIR /app
 COPY --from=build /app/target/*.jar ./app.jar
 
 ENV JAVA_OPTS ""
-CMD ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

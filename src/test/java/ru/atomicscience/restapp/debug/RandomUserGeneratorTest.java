@@ -36,8 +36,8 @@ class RandomUserGeneratorTest {
 
     @Test
     void Test_RequestReturnsCorrectAmountOfObjects() {
-        List<User> users = generator.generateTestUsers(100);
+        List<User> users = generator.generateTestUsers(10);
 
-        assertEquals(100, users.size());
+        assertEquals(10, users.size());
     }
 }
